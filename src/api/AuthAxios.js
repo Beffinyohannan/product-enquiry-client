@@ -18,7 +18,7 @@ let axiosJWT = axios.create(defaultOptions);
 axiosJWT.interceptors.request.use(function (config) {
     const token = cookies.get('accessToken')
     console.log(token,'headerToken');
-    config.headers.accessToken = token;
+    config.headers.accesstoken = token;
     return config;
 });
 

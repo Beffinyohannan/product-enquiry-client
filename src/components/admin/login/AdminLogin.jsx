@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {  useNavigate } from 'react-router-dom'
 import { adminLogin } from '../../../api/AdminRequest';
-// import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie';
  
 
 
@@ -13,7 +13,7 @@ function AdminLogin() {
   const initialValues = { email: "", password: "" }
   const [formValues, setFormValues] = useState(initialValues)
   const navigate = useNavigate()
-  // const cookies = new Cookies();
+  const cookies = new Cookies();
 
 
   const [error, setError] = useState({});
@@ -38,7 +38,7 @@ function AdminLogin() {
         console.log(data);
         if (data.success) {
           localStorage.setItem("refToken", data.refreshToken)
-          // cookies.set('accessToken', data.accessToken, { path: '/' });
+          cookies.set('accessToken', data.accessToken, { path: '/' });
           
 
           navigate("/admin-dashboard")

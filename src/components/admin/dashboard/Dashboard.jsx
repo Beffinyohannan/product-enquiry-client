@@ -4,13 +4,13 @@ import { confirmAlert } from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie';
 
 function Dashboard() {
 
   const [enquiryData, setEnquiryData] = useState([])
   const [change, setChange] = useState(false)
-  // const cookies = new Cookies();
+  const cookies = new Cookies();
 
 
 
@@ -25,7 +25,7 @@ function Dashboard() {
         const { data } = await refreshTokens(refToken)
         console.log(data);
         localStorage.setItem("refToken", data.refreshToken)
-        // cookies.set('accessToken', data.accessToken, { path: '/' });
+        cookies.set('accessToken', data.accessToken, { path: '/' });
         setChange(!change)
       } else {
         toast(error.response.data.message)
@@ -67,7 +67,7 @@ function Dashboard() {
                 const { data } = await refreshTokens(refToken)
                 console.log(data);
                 localStorage.setItem("refToken", data.refreshToken)
-                // cookies.set('accessToken', data.accessToken, { path: '/' });
+                cookies.set('accessToken', data.accessToken, { path: '/' });
                 setChange(!change)
               } else {
                 toast(error.response.data.message)

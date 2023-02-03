@@ -4,9 +4,13 @@ import {confirmAlert} from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import './Navbar.css'
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
+
 
 function Navbar() {
     const navigate = useNavigate()
+    const cookies = new Cookies();
+
     
     const handleLogout =(()=>{
         
@@ -25,6 +29,7 @@ function Navbar() {
                         console.log(data);
                         if(data.success){
                             localStorage.removeItem('refToken')
+                            cookies.remove('accessToken')
                             navigate('/admin-login')
                         }
                     } catch (error) {

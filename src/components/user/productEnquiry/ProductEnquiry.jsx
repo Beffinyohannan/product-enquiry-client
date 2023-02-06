@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import { enquiryForm } from '../../../api/UserRequest'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const fetchedImgSrc = "https://dragon2000-multisite.s3.eu-west-2.amazonaws.com/wp-content/uploads/sites/142/2021/01/07101841/Warranty-Banner-1.jpg"
 
 function ProductEnquiry() {
     const initialValues = { name: "", email: "", phone: "", enquiry: "" }
     const [formValues, setFormValues] = useState(initialValues)
-
+    // const [currentLocation,setCurrentLocation] = useState()
     const [error, setError] = useState({});
 
     const enquiryData = {
@@ -20,6 +21,12 @@ function ProductEnquiry() {
         setFormValues({ ...formValues, [name]: value })
     }
 
+    // const getLocation = async()=>{
+    //     const location = await axios.get('https://ipapi.co/json')
+    //     // console.log(location.data,'function')
+    //     setCurrentLocation(location.data)
+    // }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -27,6 +34,8 @@ function ProductEnquiry() {
         setError(errors)
         if (Object.keys(errors).length === 0) {
             try {
+                // await getLocation()
+                // console.log(currentLocation,'c')
                 const { data } = await enquiryForm(enquiryData)
                 console.log(data);
                 if (data.success){
@@ -44,6 +53,7 @@ function ProductEnquiry() {
     
                 }
             } catch (error) {
+                console.log(error)
                 toast (error.response.data.message)
             }
 
@@ -56,9 +66,12 @@ function ProductEnquiry() {
     const validateForm = (data) => {
         const error = {};
         const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        const space = /^\s/
 
         if (!data.name) {
             error.name = "Name required"
+        }else if(space.test(data.name)){
+            error.name = "Enter valid name"
         }
 
         if (!data.email) {
@@ -69,12 +82,16 @@ function ProductEnquiry() {
 
         if (!data.phone) {
             error.phone = "phone required"
-        } else if (!data.phone.length === 10) {
+        }else if (data.phone.length !== 10) {
             error.phone = "Phone number should be 10 digit"
+        }else if(space.test(data.phone)){
+            error.phone = "Enter valid number"
         }
 
         if (!data.enquiry) {
             error.enquiry = "Enquiry required"
+        }else if(space.test(data.enquiry)){
+            error.enquiry = "Enter valid message"
         }
 
         return error;
@@ -108,12 +125,12 @@ function ProductEnquiry() {
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700 ">Email</label>
-                                    <input className=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400" name='email' type="text" value={formValues.email} onChange={handleChange} placeholder="mail@gmail.com" />
+                                    <input className=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400" name='email' type="email" value={formValues.email} onChange={handleChange} placeholder="mail@gmail.com" />
                                     <p className='text-red-500'>{error.email}</p>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700 ">Phone</label>
-                                    <input className=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400" name='phone' type="text" value={formValues.phone} onChange={handleChange} placeholder="8128538965" />
+                                    <input className=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400" name='phone' type="tel" value={formValues.phone} onChange={handleChange} placeholder="8128538965" />
                                     <p className='text-red-500'>{error.phone}</p>
                                 </div>
                                 <div className="space-y-2">

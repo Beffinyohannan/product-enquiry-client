@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import {  useNavigate } from 'react-router-dom'
 import { adminLogin } from '../../../api/AdminRequest';
 import Cookies from 'universal-cookie';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
  
 
 
@@ -44,7 +46,9 @@ function AdminLogin() {
           navigate("/admin-dashboard")
         }
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data.message);
+        toast(error.response.data.message)
+        
 
       }
 
@@ -123,6 +127,7 @@ function AdminLogin() {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

@@ -9,7 +9,7 @@ const fetchedImgSrc = "https://dragon2000-multisite.s3.eu-west-2.amazonaws.com/w
 function ProductEnquiry() {
     const initialValues = { name: "", email: "", phone: "", enquiry: "" }
     const [formValues, setFormValues] = useState(initialValues)
-    // const [currentLocation,setCurrentLocation] = useState()
+    const [currentLocation,setCurrentLocation] = useState()
     const [error, setError] = useState({});
 
     const enquiryData = {
@@ -22,9 +22,13 @@ function ProductEnquiry() {
     }
 
     // const getLocation = async()=>{
-    //     const location = await axios.get('https://ipapi.co/json')
-    //     // console.log(location.data,'function')
-    //     setCurrentLocation(location.data)
+    //     try {
+    //         const location = await axios.get('https://ipapi.co/json')
+    //         console.log(location.data,'function')
+    //         setCurrentLocation(location.data)
+    //     } catch (error) {
+    //        console.log(error) 
+    //     }
     // }
 
     const handleSubmit = async (e) => {
@@ -34,9 +38,10 @@ function ProductEnquiry() {
         setError(errors)
         if (Object.keys(errors).length === 0) {
             try {
-                // await getLocation()
-                // console.log(currentLocation,'c')
-                const { data } = await enquiryForm(enquiryData)
+                const location = await axios.get('https://ipapi.co/json')
+                console.log(location.data,'function')
+
+                const { data } = await enquiryForm(enquiryData,location.data)
                 console.log(data);
                 if (data.success){
                     toast.success('Enquiry Subimtted Sucessfully', {
